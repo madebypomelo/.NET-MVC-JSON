@@ -1,0 +1,68 @@
+﻿@model Dashboard.Models.jsonViewModel
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<header>
+    <p>Der er pt. @Model.Orders.Where(A => A.OrderContent.Any(B => B.Status == 1)).Count() ordre med statuskode 1.</p>
+
+    <input type="checkbox" name="OnlyUnsent" id="OnlyUnsent" @(Request.QueryString["OnlyUnsent"] != null && Request.QueryString["OnlyUnsent"] == "true" ? "checked" : "") />
+    <label for="OnlyUnsent">Vis kun ordre, med statuskode "1"</label>
+</header>
+
+@foreach (var Order in Model.Orders)
+{
+    <div class="order">
+        <div class="order-heading">
+            <h2>@Order.Supplier.Name </h2>
+            <p>@Order.CreatedDate.ToString("dd/MM yyyy")</p>
+        </div>
+
+
+        @foreach (var SpecificOrder in Order.OrderContent)
+        {
+            <div class="orderContent">
+                <div class="store">
+                    <h3>@SpecificOrder.Store.Name</h3>
+                    <p> <span class="@(SpecificOrder.Status == 1 ? "statuscode1" : "")">Statuskode: @SpecificOrder.Status</span></p>
+                </div>
+
+                @foreach (var item in SpecificOrder.OrderLines)
+                {
+                    <div class="product">
+                        <ul>
+                            <li><p>@item.Name</p> <p>SKU: @item.Sku</p></li>
+                        </ul>
+                        
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+<div id="scrollToTop"><i class="fas fa-chevron-up"></i></div>
+
+<script>
+    $(document).ready(function () {
+        $("#OnlyUnsent").on("change", function () {
+            location.href.replace("page=" + "@Request.RawUrl", "page=" + 1);
+            alert(1);
+        });
+
+        
+        $("#scrollToTop").on("click", function () {
+            var body = $("html, body");
+            body.stop().animate({ scrollTop: 0 }, 1000, 'swing');
+        });
+
+        $(window).scroll(function () {
+            if ($('body').offset().top < $(window).scrollTop()) {
+                $("#scrollToTop").fadeIn();
+            } else {
+                $("#scrollToTop").fadeOut();
+            }
+        });  
+        
+    })
+</script>

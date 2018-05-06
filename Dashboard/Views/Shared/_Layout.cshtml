@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - NOOS ordre</title>
+    <link href="~/Content/CSS/main.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Crete+Round" rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><img src="~/Content/Img/logo.png" alt="Logo" /><h1>DashBoard</h1><a href="https://www.fribikeshop.dk/" target="_blank" title="FriBikeshop.dk åbner i en ny fane">Gå til FriBikeshop.dk <i class="fas fa-arrow-right"></i></a></li>
+        </ul>
+    </nav>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        <p>Copyright &copy; @DateTime.Now.Year</p>
+    </footer>
+</body>
+</html>

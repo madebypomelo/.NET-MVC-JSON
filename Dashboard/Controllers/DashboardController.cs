@@ -16,6 +16,11 @@ namespace Dashboard.Controllers
             //Create new instance of jsonViewModel.
             jsonViewModel jsonViewModel = new jsonViewModel();
 
+
+            //INSERT JSON URL INTO THIS VARIABLE.
+            string JSONUrl = "";
+
+
             //Create variable for storing JSON.
             var JSON = "";
             //Create variable for query-string.
@@ -26,8 +31,8 @@ namespace Dashboard.Controllers
             {
                 //Set WebClient encoding.
                 httpClient.Encoding = Encoding.UTF8;
-                //Get JSON and store as a string.
-                JSON = httpClient.DownloadString("http://api.fribikeshop.dk/noos-transmitted-dashboard");
+                //Get JSON and store it as a string.
+                JSON = httpClient.DownloadString(JSONUrl);
             }
 
             //JsonConvert the JSON string.
@@ -51,23 +56,32 @@ namespace Dashboard.Controllers
                 {
                     //The supplier was not listed for the specific date.
 
-                    //Only add the order to the list, if it has statuscode 1
+                    //Check if we only want to load orders, with statuscode 1.
                     if (OnlyUnsent == "true")
                     {
+                        //We only want to load orders with statuscode 1. 
+                        //Check the newOrders statuscode.
                         if (newOrder.Status == 1)
                         {
+                            //The newOrder had a statuscode 1.
+                            //Add it to the list.
                             addToList();
                         }
                     }
                     else
                     {
+                        //We want to load all orders, nomatter statuscode.
+                        //Add it to the list.
                         addToList();
                     }
-                    void addToList ()
+
+                    //Create void for adding supplier and order to the list.
+                    void addToList()
                     {
+                        //Create the new order
                         jsonViewModel.Orders.Add(new ordersListed() { Supplier = new supplier() { Name = newOrder.Supplier.Name, Guid = newOrder.Supplier.Guid }, OrderContent = new List<RootObject>() { new RootObject() { Store = new store { Name = newOrder.Store.Name }, Status = newOrder.Status, OrderLines = new List<orderline>() } }, CreatedDate = newOrder.CreatedDate });
 
-                        //Add OrderLines to the new OrderContent.
+                        //Adds OrderLines to the new OrderContent.
                         foreach (var item in newOrder.OrderLines)
                         {
                             jsonViewModel.Orders[jsonViewModel.Orders.Count() - 1].OrderContent[0].OrderLines.Add(new orderline() { Name = item.Name, Sku = item.Sku });
@@ -76,21 +90,32 @@ namespace Dashboard.Controllers
 
                 } else
                 {
-                    //The supplier was already listed for the specific date. Add some new OrderContent to it.
+                    //The supplier was already listed for the specific date.
+
+                    //Check if we only want to load orders, with statuscode 1.
                     if (OnlyUnsent == "true")
                     {
+                        // We only want to load orders with statuscode 1.
+                        //Check the newOrders statuscode.
                         if (newOrder.Status == 1)
                         {
-                            AddItemToList();
+                            //The newOrder had a statuscode 1.
+                            //Add it to the list.
+                            AddToList();
                         }
                     } else
                     {
-                        AddItemToList();
+                        //We want to load all orders, nomatter statuscode.
+                        //Add it to the list.
+                        AddToList();
                     }
 
-                    void AddItemToList ()
+                    //Create void for adding supplier and order to the list.
+                    void AddToList ()
                     {
+                        //Find the main order/supplier.
                         var mainOrder = jsonViewModel.Orders.Where(A => A.CreatedDate.ToString("dd/MM yyyy") == newOrder.CreatedDate.ToString("dd/MM yyyy") && A.Supplier.Guid == newOrder.Supplier.Guid).FirstOrDefault();
+                        //Add the new specificOrder to it.
                         mainOrder.OrderContent.Add(new RootObject() { Status = newOrder.Status, Store = new store() { Name = newOrder.Store.Name }, OrderLines = new List<orderline>() });
 
                         //Add OrderLines to the new SpecificOrder.
@@ -102,7 +127,7 @@ namespace Dashboard.Controllers
                 }
             }
 
-            //Order the Orders-list by newest date first, and limit it to the last 14 days.
+            //Order the Orders-list by newest date, and limit it to the last 14 days.
             jsonViewModel.Orders = jsonViewModel.Orders.OrderByDescending(A => A.CreatedDate)
                                                        .Where(A => A.CreatedDate >= DateTime.Now.AddDays(-14)).ToList();
 

@@ -1,19 +1,37 @@
-﻿* {
+﻿/* GENERAL */
+
+* {
     margin: 0;
     padding: 0;
+    box-sizing: padding-box;
     /* DECLARING VARIABLES*/
     --white-color: #ffffff;
     --light-gray-color: #f9f9f9;
     --dark-gray-color: #f1f1f1;
     --black-color: #0c0429;
     --light-black-color: #414141;
+    --yellow-color: #f3ea9f;
+}
+
+/* FONTS */
+
+p {
+    font-size: 1em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.18em;
 }
 
 /* BODY */
 
 body {
     background-color: var(--dark-gray-color);
-    font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+    font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
     color: var(--black-color);
 }
 
@@ -24,10 +42,10 @@ nav {
     background-color: var(--light-gray-color);
     margin-bottom: 20px;
     border-bottom: 2px solid #e5e5e5;
+    box-shadow: 0 0 5px var(--dark-gray-color);
     position: fixed;
     left: 0;
     top: 0;
-    box-shadow: 0 0 5px var(--dark-gray-color);
 }
 
     nav ul {
@@ -42,31 +60,52 @@ nav {
         align-items: center;
     }
 
-        nav ul li h1 {
-            padding-left: 10px;
-        }
+    nav #logo {
+        width: 40px;
+        display: inline;
+    }
 
-        nav ul li a,
-        nav ul li a:visited {
-            text-align: right;
-            color: #979797;
-            text-decoration: none;
-            transition: .2s ease-in-out;
-        }
+    nav ul li h1 {
+        padding: 0 10px;
+    }
 
-            nav ul li a:hover {
-                color: #525252;
-            }
+    nav ul li a,
+    nav ul li a:visited {
+        text-align: right;
+        color: #979797;
+        text-decoration: none;
+        transition: .2s ease-in-out;
+    }
 
-            nav ul li a .fa-arrow-right {
-                font-size: .8em;
-                margin: 0 0 0 8px;
-            }
+    nav ul li a:hover {
+        color: #525252;
+    }
 
-            nav img {
-                width: 40px;
-                display: inline;
-            }
+    nav ul li a .fa-arrow-right {
+        font-size: .8em;
+        margin: 0 0 0 8px;
+    }
+
+/* NOSCRIPT */
+
+noscript {
+    display: block;
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: var(--yellow-color);
+    border-radius: 2px;
+}
+
+    noscript p {
+        margin: 5px 0;
+    }
+
+    noscript a,
+    noscript a:visited {
+        color: inherit;
+        text-decoration: underline;
+    }
+
 
 /* HEADER */
 
@@ -75,6 +114,16 @@ header {
     padding: 15px;
     border-radius: 2px;
 }
+
+header label {
+    margin-left: 5px;
+}
+
+header label:hover {
+    cursor: pointer;
+}
+
+/* MAIN */
 
 main,
 nav ul {
@@ -88,11 +137,16 @@ main {
     margin-top: 62px;
 }
 
-/* CSS GRID */
+/* ORDERS & ORDER-HEADING */
+
+.order {
+    border-radius: 2px;
+}
 
 .order-heading,
 .orderContent .product li,
-.store {
+.store,
+header {
     display: grid;
     grid-template-columns: 1fr .5fr;
 }
@@ -107,35 +161,57 @@ main {
 .order-heading {
     margin: 15px 0 0 0;
     border-bottom: 2px solid #f1f1f1;
-    background-color: #fdfdfd;
+    background-color: var(--light-gray-color);
     font-size: 1em;
-    font-weight: 500;
 }
 
-.orderContent .product {
-    padding: 5px 0 5px 0;
-}
-
-    .orderContent .product:last-of-type {
-        margin: 0 0 0px 0;
+    .order-heading .date {
+        font-size: 1.4em;
+        font-weight: 600;
     }
 
+/* STORE */
+
 .store {
-    padding: 0 0 5px 0;
+    padding: 7px 15px;
+    margin: -10px -15px 0 -15px;
+    background-color: var(--white-color);
 }
 
-.product:not(:last-of-type),
-.store {
+/* PRODUCTS */
+
+.product:not(:last-of-type) {
     border-bottom: 2px dashed #f0f0f0;
+}
+
+.product:nth-of-type(2) {
+    border-top: 2px dashed #f0f0f0;
 }
 
 .product li p:first-of-type {
     padding: 0 10px 0 0;
 }
 
-.statuscode1 {
-    background-color: #f3ea9f !important;
+.orderContent .product {
+    padding: 5px 0 5px 0;
+    transition: .2s ease-in-out;
 }
+
+    .orderContent .product:last-of-type {
+        margin: 0 0 0px 0;
+    }
+
+    .order .orderContent .product:hover {
+        background-color: var(--light-gray-color);
+    }
+
+/* STATUSCODE */
+
+.statuscode1 {
+    background-color: var(--yellow-color);
+}
+
+/* UTILITIES */
 
 #scrollToTop {
     padding: 8px;
@@ -148,10 +224,6 @@ main {
     display: none;
 }
 
-footer {
-    background-color: var(--light-gray-color);
-    padding: 15px 0;
-    text-align: center;
-    text-transform: uppercase;
-    font-family: 'Crete Round', serif;
+#scrollToTop:hover {
+    cursor: pointer;
 }
